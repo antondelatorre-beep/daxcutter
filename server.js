@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -7,6 +8,8 @@ const { spawn } = require('child_process');
 const crypto = require('crypto');
 
 const app = express();
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 const PORT = process.env.PORT || 10000;
 const upload = multer({
   dest: os.tmpdir(),
