@@ -1,70 +1,176 @@
-\
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Audio Cutter Studio</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YT Audio Cutter</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--panel:#151d32;--line:#293653;--muted:#9eabc5;--accent:#8290ff;--mint:#35d6b0}
-*{box-sizing:border-box}body{margin:0;padding:30px 15px;background:radial-gradient(ellipse at top,#1c2a50,#0b1020 58%);font:15px system-ui,Arial;color:#eef2ff;min-height:100vh}
-main{max-width:780px;margin:auto}.hero{text-align:center;margin:12px 0 26px}.tag{color:var(--mint);letter-spacing:2px;font-weight:800;font-size:12px}.hero h1{font-size:clamp(32px,6vw,48px);margin:8px 0}.hero p,.muted{color:var(--muted)}
-.panel{background:#151d32ed;border:1px solid var(--line);border-radius:19px;padding:22px;margin:15px 0;box-shadow:0 16px 45px #0004}.panel h2{font-size:18px;margin:0 0 16px}
-.drop{border:1.5px dashed #586b98;border-radius:14px;padding:28px 14px;text-align:center;background:#10182b;cursor:pointer}.drop:hover{border-color:var(--accent)}.drop b{display:block;font-size:17px;margin:7px}
-button,.download{border:0;border-radius:11px;padding:12px 17px;font-weight:750;cursor:pointer;background:var(--accent);color:white}.secondary{background:#293653}.green{background:#148c76}button:disabled{opacity:.45;cursor:not-allowed}
-audio{width:100%;margin:15px 0 5px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;color:var(--muted);font-size:13px;margin-bottom:7px}.field input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;background:#0c1426;color:white;font:inherit}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.status{color:var(--muted);font-size:13px;min-height:22px;margin-top:14px}.note{font-size:13px;line-height:1.5;color:#c8d2e7;background:#101a2b;border-left:3px solid var(--mint);padding:11px 13px;border-radius:7px;margin-top:15px}.bar{height:7px;background:#293653;border-radius:9px;overflow:hidden;margin-top:10px}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--mint))}
-small{color:var(--muted)}@media(max-width:540px){.panel{padding:17px}.fields{grid-template-columns:1fr}}
+:root{color-scheme:dark;--bg:#0b1020;--panel:#141c30;--panel2:#1b2740;--text:#f4f7ff;--muted:#9aa8c2;--accent:#8b7cff;--green:#4ade80;--line:#2a3855}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#192647 0,#0b1020 48%);color:var(--text);font:15px/1.5 Inter,system-ui,Arial,sans-serif;min-height:100vh}
+main{width:min(900px,calc(100% - 32px));margin:42px auto 70px}
+header{text-align:center;margin-bottom:28px}header .logo{display:inline-grid;place-items:center;width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,#8b7cff,#4f46e5);font-size:27px;box-shadow:0 12px 40px #5145cd55}
+h1{font-size:clamp(30px,5vw,44px);margin:14px 0 5px;letter-spacing:-1.5px}header p,.muted{color:var(--muted)}header p{margin:0}
+.card{background:linear-gradient(180deg,#17223a,#121a2c);border:1px solid var(--line);border-radius:20px;padding:22px;margin:16px 0;box-shadow:0 16px 50px #0002}
+h2{font-size:18px;margin:0 0 14px}.row{display:flex;gap:10px}.row>*{min-width:0}
+input[type=url],input[type=text],input[type=number]{width:100%;background:#0c1425;border:1px solid var(--line);color:var(--text);padding:13px 14px;border-radius:11px;font:inherit;outline:none}
+input:focus{border-color:var(--accent)}button{border:0;border-radius:11px;padding:12px 17px;background:var(--accent);color:white;font-weight:700;font:inherit;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}
+button.secondary{background:#263653}button.green{background:#16834a}.hint{font-size:13px;color:var(--muted);margin:10px 0 0}
+.notice{padding:12px 14px;background:#302817;border:1px solid #725a2a;color:#f6d99a;border-radius:12px;font-size:13px;margin-top:13px}
+#videoWrap{display:none;margin-top:16px;aspect-ratio:16/9;background:#080d18;border-radius:14px;overflow:hidden}#videoWrap iframe{width:100%;height:100%;border:0}
+.filebox{display:block;border:1px dashed #526383;border-radius:14px;padding:22px;text-align:center;background:#0e1729;cursor:pointer}.filebox input{display:none}.filebox strong{display:block;margin-bottom:4px}
+audio{width:100%;margin:10px 0 3px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fields label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+.actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:15px}
+#status{font-size:13px;color:var(--muted);min-height:20px}#download{display:none;color:#8cf0b0;text-decoration:none;font-weight:700}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
+@media(max-width:600px){.row{flex-direction:column}.fields{grid-template-columns:1fr}.card{padding:17px}main{margin-top:25px}}
 </style>
 </head>
-<body><main>
-<header class="hero"><div class="tag">AUDIO TOOLKIT</div><h1>Audio Cutter Studio</h1><p>Import · Trim · Convert · Download</p></header>
-<section class="panel">
-<h2>01 / Import audio</h2>
-<div class="drop" id="drop"><div style="font-size:32px">♫</div><b>Choose an audio file</b><span class="muted">or drop it here · MP3, WAV, M4A, OGG, FLAC</span><input id="file" type="file" accept="audio/*" hidden></div>
-<p class="muted" id="filename">No file selected</p><audio id="player" controls hidden></audio>
-<div class="note">Use audio files you own or have permission to download and convert. This app does not extract audio from YouTube URLs.</div>
+<body>
+<main>
+<header>
+  <div class="logo">♫</div>
+  <h1>YT Audio Cutter</h1>
+  <p>Preview a video, trim an audio file, and export your MP3.</p>
+</header>
+
+<section class="card">
+  <h2>1. YouTube video preview</h2>
+  <div class="row">
+    <input id="ytUrl" type="url" placeholder="Paste a YouTube video link" autocomplete="off">
+    <button id="loadVideo">Preview</button>
+  </div>
+  <div id="videoWrap"><iframe id="ytFrame" title="YouTube video preview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  <div class="notice">The YouTube link is used for video preview only. This site does not extract or download audio from YouTube. To make an MP3, upload an audio file you own or are authorized to use.</div>
+  <p class="hint" id="ytMessage">Paste a standard YouTube video URL to preview it here.</p>
 </section>
-<section class="panel">
-<h2>02 / Cut your audio</h2>
-<div class="fields">
-<div class="field"><label for="start">Start time (seconds)</label><input id="start" type="number" min="0" step=".01" value="0"></div>
-<div class="field"><label for="end">End time (seconds)</label><input id="end" type="number" min="0" step=".01" value="0"></div>
-</div>
-<div class="actions"><button class="secondary" id="markStart" disabled>Set start to playhead</button><button class="secondary" id="markEnd" disabled>Set end to playhead</button></div>
+
+<section class="card">
+  <h2>2. Add an authorized audio file</h2>
+  <label class="filebox">
+    <input id="audioFile" type="file" accept="audio/*,video/mp4,video/webm,.m4a,.mp3,.wav,.ogg,.flac">
+    <strong>Choose audio or video file</strong>
+    <span class="muted" id="fileLabel">MP3, WAV, M4A, OGG, FLAC, MP4 or WebM · up to 100 MB</span>
+  </label>
+  <audio id="player" controls></audio>
+  <div class="fields">
+    <div><label for="start">Start time (seconds)</label><input id="start" type="number" min="0" step="0.1" value="0"></div>
+    <div><label for="end">End time (seconds)</label><input id="end" type="number" min="0" step="0.1" placeholder="Audio duration"></div>
+  </div>
+  <div class="actions">
+    <span class="muted" id="duration">No audio loaded</span>
+    <button id="setEnd" class="secondary" type="button">Set end to duration</button>
+  </div>
+  <div class="actions">
+    <span id="status" role="status"></span>
+    <button id="export" class="green" disabled>Cut &amp; export MP3</button>
+  </div>
+  <div class="actions"><a id="download" download="audio_cut.mp3">Download MP3</a></div>
 </section>
-<section class="panel">
-<h2>03 / Export MP3</h2><p class="muted">The server converts your selected section into a downloadable MP3.</p>
-<div class="actions"><button class="green" id="convert" disabled>✂ Cut & convert to MP3</button></div>
-<div class="bar"><span id="progress"></span></div><div class="status" id="status" role="status">Waiting for an audio file.</div>
-</section>
+
+<footer>Use only audio you own or have permission to process. Temporary uploads are removed after conversion.</footer>
 </main>
 <script>
-const $=id=>document.getElementById(id);let selected=null,previewUrl=null,busy=false;
-function say(t){$('status').textContent=t}
-$('drop').onclick=()=>$('file').click();
-$('drop').ondragover=e=>{e.preventDefault();$('drop').style.borderColor='#8290ff'};
-$('drop').ondragleave=()=>$('drop').style.borderColor='';
-$('drop').ondrop=e=>{e.preventDefault();$('drop').style.borderColor='';choose(e.dataTransfer.files[0])};
-$('file').onchange=e=>choose(e.target.files[0]);
-function choose(file){if(!file)return;if(!file.type.startsWith('audio/')){say('Please choose an audio file.');return}
-selected=file;if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=URL.createObjectURL(file);
-$('player').src=previewUrl;$('player').hidden=false;$('filename').textContent=file.name;
-$('start').value=0;$('end').value='';$('convert').disabled=false;$('markStart').disabled=false;$('markEnd').disabled=false;
-$('player').onloadedmetadata=()=>{$('end').value=$('player').duration.toFixed(2);say('Audio loaded · '+$('player').duration.toFixed(2)+' seconds');};
+const $ = id => document.getElementById(id);
+let objectUrl = null;
+let duration = 0;
+
+function getYouTubeId(value) {
+  try {
+    const u = new URL(value);
+    if (u.hostname === 'youtu.be' || u.hostname.endsWith('.youtu.be')) {
+      return u.pathname.split('/').filter(Boolean)[0] || null;
+    }
+    if (u.hostname === 'youtube.com' || u.hostname.endsWith('.youtube.com') ||
+        u.hostname === 'm.youtube.com' || u.hostname === 'www.youtube-nocookie.com') {
+      if (u.pathname === '/watch') return u.searchParams.get('v');
+      const parts = u.pathname.split('/').filter(Boolean);
+      if (['embed','shorts','live'].includes(parts[0])) return parts[1] || null;
+    }
+  } catch (_) {}
+  return null;
 }
-$('markStart').onclick=()=>$('start').value=$('player').currentTime.toFixed(2);
-$('markEnd').onclick=()=>$('end').value=$('player').currentTime.toFixed(2);
-$('convert').onclick=async()=>{
- if(!selected||busy)return;const start=Number($('start').value),end=Number($('end').value);
- if(!Number.isFinite(start)||!Number.isFinite(end)||start<0||end<=start||end>$('player').duration){say('Check your start and end times.');return}
- busy=true;$('convert').disabled=true;$('progress').style.width='15%';say('Uploading and converting…');
- try{
-  const form=new FormData();form.append('audio',selected);form.append('start',start);form.append('end',end);
-  const response=await fetch('/api/convert',{method:'POST',body:form});
-  if(!response.ok){const data=await response.json().catch(()=>({}));throw new Error(data.error||'Conversion failed.')}
-  const blob=await response.blob();const url=URL.createObjectURL(blob);const a=document.createElement('a');
-  a.href=url;a.download=(selected.name.replace(/\.[^.]+$/,'')||'audio')+'_cut.mp3';document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),60000);$('progress').style.width='100%';say('Finished! Your MP3 download should begin automatically.');
- }catch(e){say(e.message)}finally{busy=false;$('convert').disabled=!selected;}
-};
-</script></body></html>
+
+$('loadVideo').addEventListener('click', () => {
+  const id = getYouTubeId($('ytUrl').value.trim());
+  if (!id || !/^[\w-]{11}$/.test(id)) {
+    $('ytMessage').textContent = 'That does not look like a valid YouTube video URL.';
+    $('videoWrap').style.display = 'none';
+    $('ytFrame').src = '';
+    return;
+  }
+  $('ytFrame').src = 'https://www.youtube-nocookie.com/embed/' + id;
+  $('videoWrap').style.display = 'block';
+  $('ytMessage').textContent = 'Video preview loaded. Upload an authorized audio file below to trim and export.';
+});
+
+$('audioFile').addEventListener('change', () => {
+  const file = $('audioFile').files[0];
+  $('download').style.display = 'none';
+  if (!file) return;
+  if (objectUrl) URL.revokeObjectURL(objectUrl);
+  objectUrl = URL.createObjectURL(file);
+  $('player').src = objectUrl;
+  $('fileLabel').textContent = file.name;
+  $('status').textContent = 'Loading audio…';
+  $('export').disabled = true;
+});
+
+$('player').addEventListener('loadedmetadata', () => {
+  duration = $('player').duration;
+  $('duration').textContent = 'Duration: ' + duration.toFixed(2) + ' seconds';
+  $('end').value = duration.toFixed(2);
+  $('status').textContent = 'Audio ready.';
+  $('export').disabled = false;
+});
+
+$('player').addEventListener('error', () => {
+  $('status').textContent = 'Could not preview this file. Try another supported audio file.';
+  $('export').disabled = true;
+});
+
+$('setEnd').addEventListener('click', () => {
+  if (duration) $('end').value = duration.toFixed(2);
+});
+
+$('export').addEventListener('click', async () => {
+  const file = $('audioFile').files[0];
+  const start = Number($('start').value);
+  const end = Number($('end').value);
+  if (!file) return $('status').textContent = 'Choose a file first.';
+  if (!Number.isFinite(start) || !Number.isFinite(end) || start < 0 || end <= start || end > duration + 0.05) {
+    return $('status').textContent = 'Enter valid start and end times within the audio duration.';
+  }
+
+  const form = new FormData();
+  form.append('audio', file);
+  form.append('start', String(start));
+  form.append('end', String(end));
+
+  $('export').disabled = true;
+  $('status').textContent = 'Converting… please wait.';
+  $('download').style.display = 'none';
+
+  try {
+    const response = await fetch('/api/convert', { method: 'POST', body: form });
+    if (!response.ok) {
+      let message = 'Conversion failed.';
+      try { message = (await response.json()).error || message; } catch (_) {}
+      throw new Error(message);
+    }
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    $('download').href = url;
+    $('download').download = (file.name.replace(/\.[^.]+$/, '') || 'audio') + '_cut.mp3';
+    $('download').style.display = 'inline';
+    $('status').textContent = 'Your MP3 is ready.';
+    $('download').click();
+  } catch (err) {
+    $('status').textContent = err.message || 'Something went wrong.';
+  } finally {
+    $('export').disabled = false;
+  }
+});
+</script>
+</body>
+</html>

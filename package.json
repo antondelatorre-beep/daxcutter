@@ -1,11 +1,11 @@
 {
-  "name": "audio-converter-cutter",
+  "name": "yt-audio-cutter",
   "version": "1.0.0",
-  "private": true,
-  "description": "Render-ready audio converter and cutter for audio files you are authorized to use.",
+  "description": "YouTube video preview and authorized audio cutter",
   "main": "server.js",
-  "scripts": { "start": "node server.js" },
-  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "express": "^4.21.2",
     "multer": "^1.4.5-lts.1"

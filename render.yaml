@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: audio-converter-cutter
+    name: yt-audio-cutter
     runtime: docker
     plan: free
     healthCheckPath: /health
