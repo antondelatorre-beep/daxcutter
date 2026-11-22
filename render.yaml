@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: audio-converter-cutter
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
